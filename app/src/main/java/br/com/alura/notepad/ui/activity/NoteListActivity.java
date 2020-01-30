@@ -1,8 +1,10 @@
-package br.com.alura.notepad;
+package br.com.alura.notepad.ui.activity;
 
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import br.com.alura.notepad.R;
 
 public class NoteListActivity extends AppCompatActivity {
 
