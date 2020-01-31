@@ -14,7 +14,7 @@ import java.util.List;
 import br.com.alura.notepad.R;
 import br.com.alura.notepad.model.Note;
 
-public class NoteListAdapter extends RecyclerView.Adapter {
+public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.NoteListViewHolder> {
 
     private Context mContext;
     private List<Note> noteList;
@@ -26,20 +26,15 @@ public class NoteListAdapter extends RecyclerView.Adapter {
 
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public NoteListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View mView = LayoutInflater.from(mContext).inflate(R.layout.item_note_list, parent, false);
         return new NoteListViewHolder(mView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull NoteListViewHolder holder, int position) {
         Note note = noteList.get(position);
-
-        TextView noteTitle = holder.itemView.findViewById(R.id.item_note_list_title);
-        noteTitle.setText(note.getTitle());
-
-        TextView noteDescription = holder.itemView.findViewById(R.id.item_note_list_description);
-        noteDescription.setText(note.getDescription());
+        holder.bindInformation(note);
     }
 
     @Override
@@ -49,8 +44,18 @@ public class NoteListAdapter extends RecyclerView.Adapter {
 
     class NoteListViewHolder extends RecyclerView.ViewHolder {
 
+        private final TextView noteTitle;
+        private final TextView noteDescription;
+
         NoteListViewHolder(@NonNull View itemView) {
             super(itemView);
+            noteTitle = itemView.findViewById(R.id.item_note_list_title);
+            noteDescription = itemView.findViewById(R.id.item_note_list_description);
+        }
+
+        void bindInformation(Note note) {
+            noteTitle.setText(note.getTitle());
+            noteDescription.setText(note.getDescription());
         }
     }
 }
