@@ -54,6 +54,10 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.NoteLi
         }
 
         void bindInformation(Note note) {
+            initializeFields(note);
+        }
+
+        private void initializeFields(Note note) {
             noteTitle.setText(note.getTitle());
             noteDescription.setText(note.getDescription());
         }
