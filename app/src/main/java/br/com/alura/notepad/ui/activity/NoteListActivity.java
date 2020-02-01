@@ -1,6 +1,9 @@
 package br.com.alura.notepad.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,6 +24,22 @@ public class NoteListActivity extends AppCompatActivity {
 
         initializeTestNotes();
         setupRecyclerView();
+        setupInsertNoteBehaviour();
+    }
+
+    private void setupInsertNoteBehaviour() {
+        TextView insertNote = findViewById(R.id.activity_note_list_insert_note);
+        insertNote.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startInsertNoteActivity();
+            }
+        });
+    }
+
+    private void startInsertNoteActivity() {
+        Intent intent = new Intent(NoteListActivity.this, InsertNoteActivity.class);
+        startActivity(intent);
     }
 
     private void setupRecyclerView() {
