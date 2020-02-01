@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,16 +14,22 @@ import br.com.alura.notepad.dao.NoteDAO;
 import br.com.alura.notepad.model.Note;
 import br.com.alura.notepad.ui.adapter.recyclerview.NoteListAdapter;
 
+import static br.com.alura.notepad.ui.activity.ConstantBetweenActivities.NOTE_KEY;
+import static br.com.alura.notepad.ui.activity.ConstantBetweenActivities.NOTE_REQUEST_CODE;
+import static br.com.alura.notepad.ui.activity.ConstantBetweenActivities.NOTE_RESULT_CODE;
+
 public class NoteListActivity extends AppCompatActivity {
 
-    NoteDAO dao = new NoteDAO();
+    private static final String APPBAR_TITLE = "Notepad";
+    private final NoteDAO dao = new NoteDAO();
+    private NoteListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note_list);
+        setTitle(APPBAR_TITLE);
 
-        initializeTestNotes();
         setupRecyclerView();
         setupInsertNoteBehaviour();
     }
@@ -39,19 +46,31 @@ public class NoteListActivity extends AppCompatActivity {
 
     private void startInsertNoteActivity() {
         Intent intent = new Intent(NoteListActivity.this, InsertNoteActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, NOTE_REQUEST_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (isValidResult(requestCode, resultCode, data)) {
+            Note newNote = data.getParcelableExtra(NOTE_KEY);
+            dao.insert(newNote);
+            adapter.addNewNote(newNote);
+        }
+    }
+
+    private boolean isValidResult(int requestCode, int resultCode, @Nullable Intent data) {
+        return requestCode == NOTE_REQUEST_CODE && resultCode == NOTE_RESULT_CODE && data.hasExtra(NOTE_KEY);
     }
 
     private void setupRecyclerView() {
-        RecyclerView noteList = findViewById(R.id.activity_note_list_recyclerview);
-        noteList.setAdapter(new NoteListAdapter(this, dao.getNoteList()));
+        RecyclerView noteRecyclerView = findViewById(R.id.activity_note_list_recyclerview);
+        setupAdapter(noteRecyclerView);
     }
 
-    private void initializeTestNotes() {
-//        for (int i = 1; i < 10000; i++) {
-//            dao.insert(new Note("New title " + i, "New description " + i));
-//        }
-        dao.insert(new Note("New title", "New Description"),
-                new Note("Another title", "A bigger description to check layout changes"));
+    private void setupAdapter(RecyclerView recyclerView) {
+        adapter = new NoteListAdapter(this, dao.getNoteList());
+        recyclerView.setAdapter(adapter);
     }
 }

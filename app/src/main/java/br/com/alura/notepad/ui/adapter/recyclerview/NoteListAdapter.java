@@ -16,8 +16,8 @@ import br.com.alura.notepad.model.Note;
 
 public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.NoteListViewHolder> {
 
-    private Context mContext;
-    private List<Note> noteList;
+    private final Context mContext;
+    private final List<Note> noteList;
 
     public NoteListAdapter(Context mContext, List<Note> noteList) {
         this.mContext = mContext;
@@ -61,5 +61,10 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.NoteLi
             noteTitle.setText(note.getTitle());
             noteDescription.setText(note.getDescription());
         }
+    }
+
+    public void addNewNote(Note note) {
+        noteList.add(note);
+        notifyDataSetChanged();
     }
 }
