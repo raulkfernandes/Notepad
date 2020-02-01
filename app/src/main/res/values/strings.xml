@@ -3,4 +3,5 @@
     <string name="insert_note_text">Inserir uma nota</string>
     <string name="insert_note_title">Title</string>
     <string name="insert_note_description">Description</string>
+    <string name="menu_title_insert_note">Insert a new note</string>
 </resources>
