@@ -1,4 +1,4 @@
-package br.com.alura.notepad.ui.adapter;
+package br.com.alura.notepad.ui.activity.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;

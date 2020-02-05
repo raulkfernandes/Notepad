@@ -4,19 +4,20 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import br.com.alura.notepad.R;
 import br.com.alura.notepad.dao.NoteDAO;
 import br.com.alura.notepad.model.Note;
-import br.com.alura.notepad.ui.adapter.recyclerview.NoteListAdapter;
+import br.com.alura.notepad.ui.recyclerview.adapter.NoteListAdapter;
+import br.com.alura.notepad.ui.recyclerview.adapter.listener.OnItemClickListener;
 
-import static br.com.alura.notepad.ui.activity.ConstantBetweenActivities.NOTE_KEY;
-import static br.com.alura.notepad.ui.activity.ConstantBetweenActivities.NOTE_REQUEST_CODE;
-import static br.com.alura.notepad.ui.activity.ConstantBetweenActivities.NOTE_RESULT_CODE;
+import static br.com.alura.notepad.ui.activity.constants.ConstantsAmongActivities.NOTE_KEY;
+import static br.com.alura.notepad.ui.activity.constants.ConstantsAmongActivities.NOTE_REQUEST_CODE;
+import static br.com.alura.notepad.ui.activity.constants.ConstantsAmongActivities.NOTE_RESULT_CODE;
 
 public class NoteListActivity extends AppCompatActivity {
 
@@ -30,8 +31,15 @@ public class NoteListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_note_list);
         setTitle(APPBAR_TITLE);
 
+        initializeTestNotes();
         setupRecyclerView();
         setupInsertNoteBehaviour();
+    }
+
+    private void initializeTestNotes() {
+        for (int i = 1; i <= 10; i++) {
+            dao.insert((new Note("Title " + i, "Description " + i)));
+        }
     }
 
     private void setupInsertNoteBehaviour() {
@@ -50,7 +58,7 @@ public class NoteListActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (isValidResult(requestCode, resultCode, data)) {
@@ -60,7 +68,7 @@ public class NoteListActivity extends AppCompatActivity {
         }
     }
 
-    private boolean isValidResult(int requestCode, int resultCode, @Nullable Intent data) {
+    private boolean isValidResult(int requestCode, int resultCode, Intent data) {
         return requestCode == NOTE_REQUEST_CODE && resultCode == NOTE_RESULT_CODE && data.hasExtra(NOTE_KEY);
     }
 
@@ -69,8 +77,14 @@ public class NoteListActivity extends AppCompatActivity {
         setupAdapter(noteRecyclerView);
     }
 
-    private void setupAdapter(RecyclerView recyclerView) {
+    private void setupAdapter(final RecyclerView recyclerView) {
         adapter = new NoteListAdapter(this, dao.getNoteList());
         recyclerView.setAdapter(adapter);
+        adapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(Note note) {
+                Toast.makeText(NoteListActivity.this, note.getTitle(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

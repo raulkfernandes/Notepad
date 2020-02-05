@@ -12,8 +12,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import br.com.alura.notepad.R;
 import br.com.alura.notepad.model.Note;
 
-import static br.com.alura.notepad.ui.activity.ConstantBetweenActivities.NOTE_KEY;
-import static br.com.alura.notepad.ui.activity.ConstantBetweenActivities.NOTE_RESULT_CODE;
+import static br.com.alura.notepad.ui.activity.constants.ConstantsAmongActivities.NOTE_KEY;
+import static br.com.alura.notepad.ui.activity.constants.ConstantsAmongActivities.NOTE_RESULT_CODE;
 
 public class InsertNoteActivity extends AppCompatActivity {
 

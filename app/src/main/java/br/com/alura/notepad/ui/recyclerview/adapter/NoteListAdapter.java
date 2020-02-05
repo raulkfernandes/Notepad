@@ -1,4 +1,4 @@
-package br.com.alura.notepad.ui.adapter.recyclerview;
+package br.com.alura.notepad.ui.recyclerview.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -13,15 +13,21 @@ import java.util.List;
 
 import br.com.alura.notepad.R;
 import br.com.alura.notepad.model.Note;
+import br.com.alura.notepad.ui.recyclerview.adapter.listener.OnItemClickListener;
 
 public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.NoteListViewHolder> {
 
     private final Context mContext;
     private final List<Note> noteList;
+    private OnItemClickListener onItemClickListener;
 
     public NoteListAdapter(Context mContext, List<Note> noteList) {
         this.mContext = mContext;
         this.noteList = noteList;
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
     }
 
     @NonNull
@@ -46,14 +52,22 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.NoteLi
 
         private final TextView noteTitle;
         private final TextView noteDescription;
+        private Note note;
 
         NoteListViewHolder(@NonNull View itemView) {
             super(itemView);
             noteTitle = itemView.findViewById(R.id.item_note_list_title);
             noteDescription = itemView.findViewById(R.id.item_note_list_description);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onItemClickListener.onItemClick(note);
+                }
+            });
         }
 
         void bindInformation(Note note) {
+            this.note = note;
             initializeFields(note);
         }
 
