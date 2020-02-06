@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.Collections;
 import java.util.List;
 
 import br.com.alura.notepad.R;
@@ -89,6 +90,11 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.NoteLi
 
     public void removeNote(int position) {
         noteList.remove(position);
+        notifyDataSetChanged();
+    }
+
+    public void swap(int initialPosition, int finalPosition) {
+        Collections.swap(noteList, initialPosition, finalPosition);
         notifyDataSetChanged();
     }
 }

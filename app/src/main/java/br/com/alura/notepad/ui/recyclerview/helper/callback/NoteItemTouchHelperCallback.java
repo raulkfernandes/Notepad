@@ -18,18 +18,23 @@ public class NoteItemTouchHelperCallback extends ItemTouchHelper.Callback {
     @Override
     public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
         int swipeFlags = ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT;
-        return makeMovementFlags(0, swipeFlags);
+        int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN | ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT;
+        return makeMovementFlags(dragFlags, swipeFlags);
     }
 
     @Override
     public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-        return false;
+        int noteInitialPosition = viewHolder.getAdapterPosition();
+        int noteFinalPosition = target.getAdapterPosition();
+        new NoteDAO().swap(noteInitialPosition, noteFinalPosition);
+        adapter.swap(noteInitialPosition, noteFinalPosition);
+        return true;
     }
 
     @Override
     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-        int swipedNotePosition = viewHolder.getAdapterPosition();
-        new NoteDAO().remove(swipedNotePosition);
-        adapter.removeNote(swipedNotePosition);
+        int notePosition = viewHolder.getAdapterPosition();
+        new NoteDAO().remove(notePosition);
+        adapter.removeNote(notePosition);
     }
 }
