@@ -19,7 +19,8 @@ import static br.com.alura.notepad.ui.activity.constants.ConstantsAmongActivitie
 
 public class NoteFormActivity extends AppCompatActivity {
 
-    private static final String APPBAR_TITLE = "Insert note";
+    private static final String APPBAR_TITLE_INSERT = "Insert note";
+    private static final String APPBAR_TITLE_UPDATE = "Edit note";
     private int receivedNotePosition = POSITION_CHECK_VALUE;
     private EditText noteTitle;
     private EditText noteDescription;
@@ -28,7 +29,7 @@ public class NoteFormActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note_form);
-        setTitle(APPBAR_TITLE);
+        setTitle(APPBAR_TITLE_INSERT);
 
         initializeFields();
         getNoteAndPosition();
@@ -37,6 +38,7 @@ public class NoteFormActivity extends AppCompatActivity {
     private void getNoteAndPosition() {
         Intent updateIntent = getIntent();
         if (updateIntent.hasExtra(NOTE_KEY)) {
+            setTitle(APPBAR_TITLE_UPDATE);
             Note receivedNote = updateIntent.getParcelableExtra(NOTE_KEY);
             receivedNotePosition = updateIntent.getIntExtra(NOTE_POSITION_KEY, POSITION_CHECK_VALUE);
             setReceivedNoteFieldsInfo(receivedNote);

@@ -96,7 +96,7 @@ public class NoteListActivity extends AppCompatActivity {
     }
 
     private boolean checkIntentData(Intent data) {
-        return data.hasExtra(NOTE_KEY);
+        return data != null && data.hasExtra(NOTE_KEY);
     }
 
     private void insertNote(Intent data) {
