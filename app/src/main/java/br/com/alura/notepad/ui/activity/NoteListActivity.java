@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,9 +14,12 @@ import br.com.alura.notepad.model.Note;
 import br.com.alura.notepad.ui.recyclerview.adapter.NoteListAdapter;
 import br.com.alura.notepad.ui.recyclerview.adapter.listener.OnItemClickListener;
 
+import static br.com.alura.notepad.ui.activity.constants.ConstantsAmongActivities.NOTE_INSERTION_REQUEST_CODE;
 import static br.com.alura.notepad.ui.activity.constants.ConstantsAmongActivities.NOTE_KEY;
-import static br.com.alura.notepad.ui.activity.constants.ConstantsAmongActivities.NOTE_REQUEST_CODE;
+import static br.com.alura.notepad.ui.activity.constants.ConstantsAmongActivities.NOTE_POSITION;
 import static br.com.alura.notepad.ui.activity.constants.ConstantsAmongActivities.NOTE_RESULT_CODE;
+import static br.com.alura.notepad.ui.activity.constants.ConstantsAmongActivities.NOTE_UPDATE_REQUEST_CODE;
+import static br.com.alura.notepad.ui.activity.constants.ConstantsAmongActivities.POSITION_CHECK_VALUE;
 
 public class NoteListActivity extends AppCompatActivity {
 
@@ -47,29 +49,40 @@ public class NoteListActivity extends AppCompatActivity {
         insertNote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startInsertNoteActivity();
+                startNoteFormActivityInsert();
             }
         });
     }
 
-    private void startInsertNoteActivity() {
-        Intent intent = new Intent(NoteListActivity.this, InsertNoteActivity.class);
-        startActivityForResult(intent, NOTE_REQUEST_CODE);
+    private void startNoteFormActivityInsert() {
+        Intent insertionIntent = new Intent(NoteListActivity.this, NoteFormActivity.class);
+        startActivityForResult(insertionIntent, NOTE_INSERTION_REQUEST_CODE);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (isValidResult(requestCode, resultCode, data)) {
+        if (isValidInsertionResult(requestCode, resultCode, data)) {
             Note newNote = data.getParcelableExtra(NOTE_KEY);
             dao.insert(newNote);
             adapter.addNewNote(newNote);
         }
+
+        if (isValidUpdateResult(requestCode, resultCode, data)) {
+            Note updatedNote = data.getParcelableExtra(NOTE_KEY);
+            int receivedPosition = data.getIntExtra(NOTE_POSITION, POSITION_CHECK_VALUE);
+            dao.update(receivedPosition, updatedNote);
+            adapter.updateNote(receivedPosition, updatedNote);
+        }
     }
 
-    private boolean isValidResult(int requestCode, int resultCode, Intent data) {
-        return requestCode == NOTE_REQUEST_CODE && resultCode == NOTE_RESULT_CODE && data.hasExtra(NOTE_KEY);
+    private boolean isValidInsertionResult(int requestCode, int resultCode, Intent data) {
+        return requestCode == NOTE_INSERTION_REQUEST_CODE && resultCode == NOTE_RESULT_CODE && data.hasExtra(NOTE_KEY);
+    }
+
+    private boolean isValidUpdateResult(int requestCode, int resultCode, Intent data) {
+        return requestCode == NOTE_UPDATE_REQUEST_CODE && resultCode == NOTE_RESULT_CODE && data.hasExtra(NOTE_KEY) && data.hasExtra(NOTE_POSITION);
     }
 
     private void setupRecyclerView() {
@@ -77,13 +90,16 @@ public class NoteListActivity extends AppCompatActivity {
         setupAdapter(noteRecyclerView);
     }
 
-    private void setupAdapter(final RecyclerView recyclerView) {
+    private void setupAdapter(RecyclerView recyclerView) {
         adapter = new NoteListAdapter(this, dao.getNoteList());
         recyclerView.setAdapter(adapter);
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
-            public void onItemClick(Note note) {
-                Toast.makeText(NoteListActivity.this, note.getTitle(), Toast.LENGTH_SHORT).show();
+            public void onItemClick(int position, Note note) {
+                Intent updateIntent = new Intent(NoteListActivity.this, NoteFormActivity.class);
+                updateIntent.putExtra(NOTE_POSITION, position);
+                updateIntent.putExtra(NOTE_KEY, note);
+                startActivityForResult(updateIntent, NOTE_UPDATE_REQUEST_CODE);
             }
         });
     }

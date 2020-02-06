@@ -4,5 +4,5 @@ import br.com.alura.notepad.model.Note;
 
 public interface OnItemClickListener {
 
-    void onItemClick(Note note);
+    void onItemClick(int position, Note note);
 }

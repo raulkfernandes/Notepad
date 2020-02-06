@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,17 +14,32 @@ import br.com.alura.notepad.R;
 import br.com.alura.notepad.model.Note;
 
 import static br.com.alura.notepad.ui.activity.constants.ConstantsAmongActivities.NOTE_KEY;
+import static br.com.alura.notepad.ui.activity.constants.ConstantsAmongActivities.NOTE_POSITION;
 import static br.com.alura.notepad.ui.activity.constants.ConstantsAmongActivities.NOTE_RESULT_CODE;
+import static br.com.alura.notepad.ui.activity.constants.ConstantsAmongActivities.POSITION_CHECK_VALUE;
 
-public class InsertNoteActivity extends AppCompatActivity {
+public class NoteFormActivity extends AppCompatActivity {
 
     private static final String APPBAR_TITLE = "Insert note";
+    private int receivedNotePosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_insert_note);
+        setContentView(R.layout.activity_note_form);
         setTitle(APPBAR_TITLE);
+
+        Intent updateIntent = getIntent();
+        if (updateIntent.hasExtra(NOTE_KEY) && updateIntent.hasExtra(NOTE_POSITION)) {
+            Note receivedNote = updateIntent.getParcelableExtra(NOTE_KEY);
+            receivedNotePosition = updateIntent.getIntExtra(NOTE_POSITION, POSITION_CHECK_VALUE);
+
+            TextView noteTitle = findViewById(R.id.activity_note_form_title);
+            noteTitle.setText(receivedNote.getTitle());
+
+            TextView noteDescription = findViewById(R.id.activity_note_form_description);
+            noteDescription.setText(receivedNote.getDescription());
+        }
     }
 
     @Override
@@ -45,12 +61,13 @@ public class InsertNoteActivity extends AppCompatActivity {
     private void returnNewNote(Note note) {
         Intent intent = new Intent();
         intent.putExtra(NOTE_KEY, note);
+        intent.putExtra(NOTE_POSITION, receivedNotePosition);
         setResult(NOTE_RESULT_CODE, intent);
     }
 
     private Note createNewNote() {
-        EditText noteTitle = findViewById(R.id.activity_insert_note_title);
-        EditText noteDescription = findViewById(R.id.activity_insert_note_description);
+        EditText noteTitle = findViewById(R.id.activity_note_form_title);
+        EditText noteDescription = findViewById(R.id.activity_note_form_description);
         return new Note(noteTitle.getText().toString(), noteDescription.getText().toString());
     }
 }
