@@ -16,7 +16,7 @@ import br.com.alura.notepad.ui.recyclerview.adapter.listener.OnItemClickListener
 
 import static br.com.alura.notepad.ui.activity.constants.ConstantsAmongActivities.NOTE_INSERTION_REQUEST_CODE;
 import static br.com.alura.notepad.ui.activity.constants.ConstantsAmongActivities.NOTE_KEY;
-import static br.com.alura.notepad.ui.activity.constants.ConstantsAmongActivities.NOTE_POSITION;
+import static br.com.alura.notepad.ui.activity.constants.ConstantsAmongActivities.NOTE_POSITION_KEY;
 import static br.com.alura.notepad.ui.activity.constants.ConstantsAmongActivities.NOTE_RESULT_CODE;
 import static br.com.alura.notepad.ui.activity.constants.ConstantsAmongActivities.NOTE_UPDATE_REQUEST_CODE;
 import static br.com.alura.notepad.ui.activity.constants.ConstantsAmongActivities.POSITION_CHECK_VALUE;
@@ -71,7 +71,7 @@ public class NoteListActivity extends AppCompatActivity {
 
         if (isValidUpdateResult(requestCode, resultCode, data)) {
             Note updatedNote = data.getParcelableExtra(NOTE_KEY);
-            int receivedPosition = data.getIntExtra(NOTE_POSITION, POSITION_CHECK_VALUE);
+            int receivedPosition = data.getIntExtra(NOTE_POSITION_KEY, POSITION_CHECK_VALUE);
             dao.update(receivedPosition, updatedNote);
             adapter.updateNote(receivedPosition, updatedNote);
         }
@@ -82,7 +82,7 @@ public class NoteListActivity extends AppCompatActivity {
     }
 
     private boolean isValidUpdateResult(int requestCode, int resultCode, Intent data) {
-        return requestCode == NOTE_UPDATE_REQUEST_CODE && resultCode == NOTE_RESULT_CODE && data.hasExtra(NOTE_KEY) && data.hasExtra(NOTE_POSITION);
+        return requestCode == NOTE_UPDATE_REQUEST_CODE && resultCode == NOTE_RESULT_CODE && data.hasExtra(NOTE_KEY) && data.hasExtra(NOTE_POSITION_KEY);
     }
 
     private void setupRecyclerView() {
@@ -97,7 +97,7 @@ public class NoteListActivity extends AppCompatActivity {
             @Override
             public void onItemClick(int position, Note note) {
                 Intent updateIntent = new Intent(NoteListActivity.this, NoteFormActivity.class);
-                updateIntent.putExtra(NOTE_POSITION, position);
+                updateIntent.putExtra(NOTE_POSITION_KEY, position);
                 updateIntent.putExtra(NOTE_KEY, note);
                 startActivityForResult(updateIntent, NOTE_UPDATE_REQUEST_CODE);
             }
