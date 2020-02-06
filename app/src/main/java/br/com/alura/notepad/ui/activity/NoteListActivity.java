@@ -8,6 +8,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import br.com.alura.notepad.R;
@@ -15,6 +16,7 @@ import br.com.alura.notepad.dao.NoteDAO;
 import br.com.alura.notepad.model.Note;
 import br.com.alura.notepad.ui.recyclerview.adapter.NoteListAdapter;
 import br.com.alura.notepad.ui.recyclerview.adapter.listener.OnItemClickListener;
+import br.com.alura.notepad.ui.recyclerview.helper.callback.NoteItemTouchHelperCallback;
 
 import static br.com.alura.notepad.ui.activity.constants.ConstantsAmongActivities.NOTE_INSERTION_REQUEST_CODE;
 import static br.com.alura.notepad.ui.activity.constants.ConstantsAmongActivities.NOTE_KEY;
@@ -117,6 +119,8 @@ public class NoteListActivity extends AppCompatActivity {
     private void setupRecyclerView() {
         RecyclerView noteRecyclerView = findViewById(R.id.activity_note_list_recyclerview);
         setupAdapter(noteRecyclerView);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new NoteItemTouchHelperCallback(adapter));
+        itemTouchHelper.attachToRecyclerView(noteRecyclerView);
     }
 
     private void setupAdapter(RecyclerView recyclerView) {
