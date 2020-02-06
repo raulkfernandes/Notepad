@@ -1,5 +1,6 @@
 package br.com.alura.notepad.ui.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -14,7 +15,6 @@ import br.com.alura.notepad.model.Note;
 
 import static br.com.alura.notepad.ui.activity.constants.ConstantsAmongActivities.NOTE_KEY;
 import static br.com.alura.notepad.ui.activity.constants.ConstantsAmongActivities.NOTE_POSITION_KEY;
-import static br.com.alura.notepad.ui.activity.constants.ConstantsAmongActivities.NOTE_RESULT_CODE;
 import static br.com.alura.notepad.ui.activity.constants.ConstantsAmongActivities.POSITION_CHECK_VALUE;
 
 public class NoteFormActivity extends AppCompatActivity {
@@ -73,7 +73,7 @@ public class NoteFormActivity extends AppCompatActivity {
         Intent intent = new Intent();
         intent.putExtra(NOTE_KEY, note);
         intent.putExtra(NOTE_POSITION_KEY, receivedNotePosition);
-        setResult(NOTE_RESULT_CODE, intent);
+        setResult(Activity.RESULT_OK, intent);
     }
 
     private Note createNewNote() {

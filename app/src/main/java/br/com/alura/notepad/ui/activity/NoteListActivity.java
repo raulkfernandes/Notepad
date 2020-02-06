@@ -1,5 +1,6 @@
 package br.com.alura.notepad.ui.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -18,7 +19,6 @@ import br.com.alura.notepad.ui.recyclerview.adapter.listener.OnItemClickListener
 import static br.com.alura.notepad.ui.activity.constants.ConstantsAmongActivities.NOTE_INSERTION_REQUEST_CODE;
 import static br.com.alura.notepad.ui.activity.constants.ConstantsAmongActivities.NOTE_KEY;
 import static br.com.alura.notepad.ui.activity.constants.ConstantsAmongActivities.NOTE_POSITION_KEY;
-import static br.com.alura.notepad.ui.activity.constants.ConstantsAmongActivities.NOTE_RESULT_CODE;
 import static br.com.alura.notepad.ui.activity.constants.ConstantsAmongActivities.NOTE_UPDATE_REQUEST_CODE;
 import static br.com.alura.notepad.ui.activity.constants.ConstantsAmongActivities.POSITION_CHECK_VALUE;
 
@@ -64,21 +64,29 @@ public class NoteListActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (isValidInsertionResult(requestCode, resultCode, data)) {
-            insertNote(data);
+        if (isValidInsertionResult(requestCode, data)) {
+            if (isValidResultCode(resultCode)) {
+                insertNote(data);
+            }
         }
 
-        if (isValidUpdateResult(requestCode, resultCode, data)) {
-            updateNote(data);
+        if (isValidUpdateResult(requestCode, data)) {
+            if (isValidResultCode(resultCode)) {
+                updateNote(data);
+            }
         }
     }
 
-    private boolean isValidInsertionResult(int requestCode, int resultCode, Intent data) {
-        return requestCode == NOTE_INSERTION_REQUEST_CODE && resultCode == NOTE_RESULT_CODE && data.hasExtra(NOTE_KEY);
+    private boolean isValidInsertionResult(int requestCode, Intent data) {
+        return requestCode == NOTE_INSERTION_REQUEST_CODE && data.hasExtra(NOTE_KEY);
     }
 
-    private boolean isValidUpdateResult(int requestCode, int resultCode, Intent data) {
-        return requestCode == NOTE_UPDATE_REQUEST_CODE && resultCode == NOTE_RESULT_CODE && data.hasExtra(NOTE_KEY);
+    private boolean isValidUpdateResult(int requestCode, Intent data) {
+        return requestCode == NOTE_UPDATE_REQUEST_CODE && data.hasExtra(NOTE_KEY);
+    }
+
+    private boolean isValidResultCode(int resultCode) {
+        return resultCode == Activity.RESULT_OK;
     }
 
     private void insertNote(Intent data) {
