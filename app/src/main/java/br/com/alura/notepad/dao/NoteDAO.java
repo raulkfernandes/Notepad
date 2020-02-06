@@ -15,19 +15,19 @@ public class NoteDAO {
         return new ArrayList<>(noteList);
     }
 
-    public void insert(Note... notes) {
+    public void insertNote(Note... notes) {
         noteList.addAll(Arrays.asList(notes));
     }
 
-    public void update(int index, Note note) {
+    public void updateNote(int index, Note note) {
         noteList.set(index, note);
     }
 
-    public void remove(int index) {
+    public void removeNote(int index) {
         noteList.remove(index);
     }
 
-    public void swap(int startIndex, int finalIndex) {
+    public void swapNotes(int startIndex, int finalIndex) {
         Collections.swap(noteList, startIndex, finalIndex);
     }
 

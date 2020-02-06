@@ -78,7 +78,7 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.NoteLi
         }
     }
 
-    public void addNewNote(Note note) {
+    public void insertNote(Note note) {
         noteList.add(note);
         notifyDataSetChanged();
     }
@@ -93,7 +93,7 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.NoteLi
         notifyDataSetChanged();
     }
 
-    public void swap(int initialPosition, int finalPosition) {
+    public void swapNotes(int initialPosition, int finalPosition) {
         Collections.swap(noteList, initialPosition, finalPosition);
         notifyDataSetChanged();
     }

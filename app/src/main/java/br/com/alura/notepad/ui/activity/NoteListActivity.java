@@ -43,7 +43,7 @@ public class NoteListActivity extends AppCompatActivity {
 
     private void initializeTestNotes() {
         for (int i = 1; i <= 10; i++) {
-            dao.insert((new Note("Title " + i, "Description " + i)));
+            dao.insertNote((new Note("Title " + i, "Description " + i)));
         }
     }
 
@@ -101,15 +101,15 @@ public class NoteListActivity extends AppCompatActivity {
 
     private void insertNote(Intent data) {
         Note newNote = data.getParcelableExtra(NOTE_KEY);
-        dao.insert(newNote);
-        adapter.addNewNote(newNote);
+        dao.insertNote(newNote);
+        adapter.insertNote(newNote);
     }
 
     private void updateNote(Intent data) {
         Note updatedNote = data.getParcelableExtra(NOTE_KEY);
         int receivedPosition = data.getIntExtra(NOTE_POSITION_KEY, POSITION_CHECK_VALUE);
         if (receivedPosition > POSITION_CHECK_VALUE) {
-            dao.update(receivedPosition, updatedNote);
+            dao.updateNote(receivedPosition, updatedNote);
             adapter.updateNote(receivedPosition, updatedNote);
         } else {
             Toast.makeText(this, "An error occurred while updating the note!", Toast.LENGTH_SHORT).show();
@@ -119,8 +119,12 @@ public class NoteListActivity extends AppCompatActivity {
     private void setupRecyclerView() {
         RecyclerView noteRecyclerView = findViewById(R.id.activity_note_list_recyclerview);
         setupAdapter(noteRecyclerView);
+        setupItemTouchHelper(noteRecyclerView);
+    }
+
+    private void setupItemTouchHelper(RecyclerView recyclerView) {
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new NoteItemTouchHelperCallback(adapter));
-        itemTouchHelper.attachToRecyclerView(noteRecyclerView);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
     private void setupAdapter(RecyclerView recyclerView) {
