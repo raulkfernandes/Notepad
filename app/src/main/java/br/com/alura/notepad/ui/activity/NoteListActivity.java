@@ -64,29 +64,37 @@ public class NoteListActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (isValidInsertionResult(requestCode, data)) {
+        if (isValidInsertRequestCode(requestCode)) {
             if (isValidResultCode(resultCode)) {
-                insertNote(data);
+                if (checkIntentData(data)) {
+                    insertNote(data);
+                }
             }
         }
 
-        if (isValidUpdateResult(requestCode, data)) {
+        if (isValidUpdateRequestCode(requestCode)) {
             if (isValidResultCode(resultCode)) {
-                updateNote(data);
+                if (checkIntentData(data)) {
+                    updateNote(data);
+                }
             }
         }
     }
 
-    private boolean isValidInsertionResult(int requestCode, Intent data) {
-        return requestCode == NOTE_INSERTION_REQUEST_CODE && data.hasExtra(NOTE_KEY);
+    private boolean isValidInsertRequestCode(int requestCode) {
+        return requestCode == NOTE_INSERTION_REQUEST_CODE;
     }
 
-    private boolean isValidUpdateResult(int requestCode, Intent data) {
-        return requestCode == NOTE_UPDATE_REQUEST_CODE && data.hasExtra(NOTE_KEY);
+    private boolean isValidUpdateRequestCode(int requestCode) {
+        return requestCode == NOTE_UPDATE_REQUEST_CODE;
     }
 
     private boolean isValidResultCode(int resultCode) {
         return resultCode == Activity.RESULT_OK;
+    }
+
+    private boolean checkIntentData(Intent data) {
+        return data.hasExtra(NOTE_KEY);
     }
 
     private void insertNote(Intent data) {
