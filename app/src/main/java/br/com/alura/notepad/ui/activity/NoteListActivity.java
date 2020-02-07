@@ -36,15 +36,8 @@ public class NoteListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_note_list);
         setTitle(APPBAR_TITLE);
 
-        initializeTestNotes();
         setupRecyclerView();
         setupInsertNoteBehaviour();
-    }
-
-    private void initializeTestNotes() {
-        for (int i = 1; i <= 10; i++) {
-            dao.insertNote((new Note("Title " + i, "Description " + i)));
-        }
     }
 
     private void setupInsertNoteBehaviour() {
