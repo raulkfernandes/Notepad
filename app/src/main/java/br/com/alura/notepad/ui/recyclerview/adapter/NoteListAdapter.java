@@ -90,11 +90,11 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.NoteLi
 
     public void removeNote(int position) {
         noteList.remove(position);
-        notifyDataSetChanged();
+        notifyItemRemoved(position);
     }
 
     public void swapNotes(int initialPosition, int finalPosition) {
         Collections.swap(noteList, initialPosition, finalPosition);
-        notifyDataSetChanged();
+        notifyItemMoved(initialPosition, finalPosition);
     }
 }
