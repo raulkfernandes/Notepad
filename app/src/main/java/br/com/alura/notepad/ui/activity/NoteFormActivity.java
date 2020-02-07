@@ -41,6 +41,7 @@ public class NoteFormActivity extends AppCompatActivity {
             setTitle(APPBAR_TITLE_UPDATE);
             Note receivedNote = updateIntent.getParcelableExtra(NOTE_KEY);
             receivedNotePosition = updateIntent.getIntExtra(NOTE_POSITION_KEY, POSITION_CHECK_VALUE);
+            assert receivedNote != null;
             setReceivedNoteFieldsInfo(receivedNote);
         }
     }

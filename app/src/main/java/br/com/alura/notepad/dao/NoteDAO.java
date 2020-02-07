@@ -31,6 +31,7 @@ public class NoteDAO {
         Collections.swap(noteList, startIndex, finalIndex);
     }
 
+    @SuppressWarnings("unused")
     public void clear() {
         noteList.clear();
     }

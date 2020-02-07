@@ -11,11 +11,13 @@
         android:layout_margin="20dp"
         android:background="@android:color/transparent"
         android:hint="@string/insert_note_title"
+        android:inputType="textCapSentences"
         android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:importantForAutofill="no" />
 
     <EditText
         android:id="@+id/activity_note_form_description"
@@ -26,9 +28,11 @@
         android:background="@android:color/transparent"
         android:gravity="top"
         android:hint="@string/insert_note_description"
+        android:inputType="textMultiLine"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/activity_note_form_title"
         app:layout_constraintStart_toStartOf="@id/activity_note_form_title"
-        app:layout_constraintTop_toBottomOf="@id/activity_note_form_title" />
+        app:layout_constraintTop_toBottomOf="@id/activity_note_form_title"
+        android:importantForAutofill="no" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

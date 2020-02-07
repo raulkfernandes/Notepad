@@ -12,7 +12,8 @@ import java.util.List;
 import br.com.alura.notepad.R;
 import br.com.alura.notepad.model.Note;
 
-public class NoteListAdapter extends BaseAdapter {
+@SuppressWarnings("unused")
+class NoteListAdapter extends BaseAdapter {
 
     private final Context mContext;
     private final List<Note> noteList;
